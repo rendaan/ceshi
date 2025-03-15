@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>MC</title>
+</head>
+<body style="background-color: #add8e6;">
+    
+
+    <style>
+        .dropdown-container {
+            width: 100%;
+            position: relative;
+            z-index: 100;
+            padding: 0 10px;
+        }
+
+        .dropdown-trigger {
+            background: #4CAF50;
+            color: white;
+            padding: 10px;
+            cursor: pointer;
+            border-radius: 5px;
+            text-align: center;
+            transition: background 0.3s;
+            margin: 0 auto;
+            width: 140px;
+        }
+
+        .dropdown-trigger:hover {
+            background: #45a049;
+        }
+
+        .dropdown-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+            position: absolute;
+            width: 100%;
+            background: white;
+            z-index: 1000;
+            top: 100%;
+            left: 0;
+        }
+
+        .dropdown-content.active {
+            max-height: 500px;
+        }
+
+        .version-box {
+            padding: 15px;
+            margin: 5px 0;
+            background: white;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+
+        .bedrock { border-left: 4px solid #00bcd4; }
+        .java { border-left: 4px solid #ff9800; }
+    </style>
+
+    <style>
+        .nav-container {
+            position: fixed;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 260px;
+            background: #000;
+            border-right: 2px solid #333;
+            z-index: 1;
+            overflow-y: auto;
+        }
+    
+        .nav-item {
+            padding: 15px;
+            color: white;
+            cursor: pointer;
+            border-bottom: 1px solid #444;
+            transition: background 0.3s;
+        }
+    
+        .nav-item:hover {
+            background: #333;
+        }
+    
+        .content-area {
+            display: none;
+            margin-left: 260px;
+            padding: 20px;
+            position: relative;
+            z-index: 0;
+        }
+
+        .content-title {
+    font-size: 32px;
+    font-weight: 900;
+    color: #000;
+    padding: 20px;
+    margin: 0;
+}
+
+.content-area.active {
+            display: block;
+        }
+    </style>
+
+    
+
+    <div class="content-area active" id="content1">
+        <!-- 原有内容保持不变 -->
+    </div>
+    <div class="content-area" id="content2">
+        <!-- 新增第二个内容区域 -->
+    </div>
+
+    <script>
+        document.querySelectorAll('.nav-item').forEach(item => {
+            item.addEventListener('click', function() {
+                document.querySelectorAll('.content-area').forEach(content => {
+                    content.classList.remove('active');
+                });
+                document.getElementById(this.dataset.target).classList.add('active');
+            });
+            });
+    </script>
+
+    <script>
+        // 新版下拉菜单交互
+        document.querySelectorAll('.dropdown-trigger').forEach(trigger => {
+            trigger.addEventListener('click', function() {
+                const content = this.nextElementSibling;
+                content.classList.toggle('active');
+                this.innerHTML = content.classList.contains('active') ? 
+                    this.innerHTML.replace('▼', '▲') : this.innerHTML.replace('▲', '▼');
+            });
+
+    </script>
+
+    <script>
+        // 修正后的脚本结构
+        document.addEventListener('DOMContentLoaded', function() {
+            // 统一处理所有下拉菜单
+            document.querySelectorAll('.dropdown-trigger').forEach(trigger => {
+                trigger.addEventListener('click', function() {
+                    const content = this.nextElementSibling;
+                    content.classList.toggle('active');
+                    this.innerHTML = content.classList.contains('active') ? 
+                        this.innerHTML.replace('▼', '▲') : this.innerHTML.replace('▲', '▼');
+                });
+            });
+
+            // 处理导航项点击
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.addEventListener('click', function() {
+                    document.querySelectorAll('.content-area').forEach(content => {
+                        content.classList.remove('active');
+                    });
+                    document.getElementById(this.dataset.target).classList.add('active');
+                });
+            });
+
+            // 新增版本框点击处理
+            document.querySelectorAll('.dropdown-content').forEach(container => {
+                container.addEventListener('click', function(e) {
+                    const versionBox = e.target.closest('.version-box');
+                    if (versionBox) {
+                        const targetId = versionBox.dataset.target;
+                        document.querySelectorAll('.content-area').forEach(content => {
+                            content.classList.remove('active');
+                        });
+                        document.getElementById(targetId)?.classList.add('active');
+                    }
+                });
+            });
+        });
+    </script>
+    <div class="nav-container">
+        <div class="dropdown-container">
+            <div class="dropdown-trigger">mc电脑端 ▼</div>
+            <div class="dropdown-content">
+                <div class="version-box java" data-target="content-java-pc">Java版</div>
+                <div class="version-box bedrock" data-target="content-bedrock-pc">基岩版</div>
+            </div>
+        </div>
+        <div class="dropdown-container" style="top: 180px;">
+            <div class="dropdown-trigger">mc手机端 ▼</div>
+            <div class="dropdown-content">
+                <div class="version-box java" data-target="content-java-mobile">Java模拟器版</div>
+                <div class="version-box bedrock" data-target="content-bedrock-mobile">基岩版</div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+
+<div class="content-area" id="content-java-pc">
+    <h1 class="content-title">mc电脑java版</h1>
+    <!-- PC Java版内容 -->
+</div>
+<div class="content-area" id="content-bedrock-pc"><!-- PC基岩版内容 --></div>
+<div class="content-area" id="content-java-mobile"><!-- 手机Java版内容 --></div>
+<div class="content-area" id="content-bedrock-mobile"><!-- 手机基岩版内容 --></div>

@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>MC</title>
+</head>
+<body style="background-color: #add8e6;">
+    
+
+    <style>
+        .dropdown-container {
+            width: 100%;
+            position: relative;
+            z-index: 100;
+            padding: 0 10px;
+        }
+
+        .dropdown-trigger {
+            background: #4CAF50;
+            color: white;
+            padding: 10px;
+            cursor: pointer;
+            border-radius: 5px;
+            text-align: center;
+            transition: background 0.3s;
+            margin: 0 auto;
+            width: 140px;
+        }
+
+        .dropdown-trigger:hover {
+            background: #45a049;
+        }
+
+        .dropdown-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+            position: absolute;
+            width: 100%;
+            background: white;
+            z-index: 1000;
+            top: 100%;
+            left: 20px;
+        }
+
+        .dropdown-content.active {
+            max-height: 500px;
+        }
+
+        .version-box {
+            padding: 15px;
+            margin: 5px 0;
+            background: white;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+
+        .bedrock { border-left: 4px solid #00bcd4; }
+        .java { border-left: 4px solid #ff9800; }
+    </style>
+
+    <style>
+        .nav-container {
+            position: fixed;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 260px;
+            background: #000;
+            border-right: 2px solid #333;
+            z-index: 1000;
+            overflow-y: auto;
+            padding: 0;
+        }
+    
+        .nav-item {
+            padding: 15px;
+            color: white;
+            cursor: pointer;
+            border-bottom: 1px solid #444;
+            transition: background 0.3s;
+        }
+    
+        .nav-item:hover {
+            background: #333;
+        }
+    
+        .content-area {
+            display: none;
+            flex-direction: row;
+            gap: 40px;
+            align-items: flex-start;
+            margin: 20px 0;
+        }
+
+        .content-area.active {
+            display: flex;
+        }
+    
+        .video-container {
+            flex: 1;
+            max-width: 600px;
+        }
+    
+        .right-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            position: relative;
+            top: -460px;
+        }
+    
+        .java-download-btn {
+            margin: 10px 0;
+            order: 2;
+        }
+    
+        .java-download-btn {
+            margin-left: 2em;
+            margin-top: 10px;
+            display: inline-block;
+        }
+        .java-download-btn button {
+            padding: 8px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+    </style>
+
+    <script>
+        document.querySelectorAll('.nav-item').forEach(item => {
+            item.addEventListener('click', function() {
+                document.querySelectorAll('.content-area').forEach(content => {
+                    content.classList.remove('active');
+                });
+                document.getElementById(this.dataset.target).classList.add('active');
+            });
+            });
+    </script>
+
+    <script>
+        // 新版下拉菜单交互
+        document.querySelectorAll('.dropdown-trigger').forEach(trigger => {
+            trigger.addEventListener('click', function() {
+                const content = this.nextElementSibling;
+                content.classList.toggle('active');
+                this.innerHTML = content.classList.contains('active') ? 
+                    this.innerHTML.replace('▼', '▲') : this.innerHTML.replace('▲', '▼');
+            });
+
+    </script>
+
+    <script>
+        // 修正后的脚本结构
+        document.addEventListener('DOMContentLoaded', function() {
+            
+            // 统一处理所有下拉菜单
+            document.querySelectorAll('.dropdown-trigger').forEach(trigger => {
+                trigger.addEventListener('click', function() {
+                    const content = this.nextElementSibling;
+                    content.classList.toggle('active');
+                    this.innerHTML = content.classList.contains('active') ? 
+                        this.innerHTML.replace('▼', '▲') : this.innerHTML.replace('▲', '▼');
+                });
+            });
+
+            // 处理导航项点击
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.addEventListener('click', function() {
+                    document.querySelectorAll('.content-area').forEach(content => {
+                        content.classList.remove('active');
+                    });
+                    document.getElementById(this.dataset.target).classList.add('active');
+                });
+            });
+
+            // 新增版本框点击处理
+            document.querySelectorAll('.dropdown-content').forEach(container => {
+                container.addEventListener('click', function(e) {
+                    const versionBox = e.target.closest('.version-box');
+                    if (versionBox) {
+                        const targetId = versionBox.dataset.target;
+                        document.querySelectorAll('.content-area').forEach(content => {
+                            content.classList.remove('active');
+                        });
+                        document.getElementById(targetId)?.classList.add('active');
+                    }
+                });
+            });
+        });
+    </script>
+    <div class="nav-container">
+        <div class="dropdown-container">
+            <div class="dropdown-trigger">mc电脑端 ▼</div>
+            <div class="dropdown-content">
+                <div class="version-box java" data-target="content-java-pc">Java版</div>
+                <div class="version-box bedrock" data-target="content-bedrock-pc">基岩版</div>
+            </div>
+        </div>
+        <div class="dropdown-container" style="top: 180px;">
+            <div class="dropdown-trigger">mc手机端 ▼</div>
+            <div class="dropdown-content">
+                <div class="version-box java" data-target="content-java-mobile">Java模拟器版</div>
+                <div class="version-box bedrock" data-target="content-bedrock-mobile">基岩版</div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+
+<div class="content-area" id="content-java-pc">
+    <h1 class="content-title">mc电脑java版</h1>
+    <p style="color: black;">准备文件：</p>
+    <a class="java-download-btn" href="https://i-190.wwentua.com:446/03151100227877821bb/2025/03/15/2e2926694db722b1badfbded1a4b4e2f.exe?st=BJEAnPbpxFrMyDPdPyFZDA&e=1742011674&b=UlALZ1c2VztSaVIkVUYAdlVhCDIHcgYgAh0MYFMhVjoCMwlhBmNZLlInXzsGeFIzVntdZA_c_c&fi=227877821&pid=114-254-196-144&up=2&mp=0&co=0">
+        <button>pcl启动器</button>
+    </a>
+    <video controls style="width: 100%; max-width: 600px; position: absolute; right: 20px; top: 20px;">
+        <source src="https://i-783.wwentua.com:446/03151100227886647bb/2025/03/15/ea891e0d0d481ca7a04692c1ea41b172.mp4?st=mYYT-r29KwkiT4wSW7gROQ&e=1742012003&b=AGJcbwU0UmIHelM0UClUflRsW3dTZg_c_c&fi=227886647&pid=114-254-196-144&up=2&mp=0&co=0" type="video/mp4">
+        您的浏览器不支持视频播放
+    </video>
+    <a class="java-download-btn" href="https://download.oracle.com/java/21/latest/jdk-21_windows-x64_bin.exe">
+        <button>java安装包</button>
+    </a>
+    <a class="java-download-btn" href="https://developer-oss.lanrar.com/file/?UzUAPl5vATACC1FpVGFUOAE+Bz9X7wCwBbxWtwb0V9ZTYgd+DmMDeQgkAT4CJgEmBDhTP15tVDNWDgNsAjpaZlNhAGVeNAFtAmxRP1QwVG0BaQckV24AcQU/VmkGbVdiU2YHYQ5qA28IeAEnAiYBPQRsU2ZeM1RjVn4DNQJtWnRTYgBiXiwBbQJmUT5UOFRsAWkHMldpAGQFOlZiBmlXZ1NmB2gOagNlCGsBYAJjATkEbFMwXmNUYlZmA2QCZ1o9U2UAZl41AXsCLlFuVHBUcwEuB3FXbQBwBWtWNAZnV2JTYgdhDmADYwhmAWcCcAF0BDdTO15kVDBWbAM0Amlab1NhAGdeMgFjAmFRP1QyVHsBdQckV24AbgV1Vm0Ga1dhU2cHYg5jA2cIZwFkAm4BMwR4UyNecVQhVmwDNAJpWm9TYQBnXjMBbAJkUTBUMFRzAS4Ha1d4AD8FM1ZhBm5XeFNhB2UOZwN5CG8BbgJgAS4Eb1NiXjVUeFZ3A2ECMVosUz0ACF5gAT4CaVE3">
+        <button>mc整合包</button>
+    </a>
+    <h2 style="color: black; font-size: 36px; text-align: center; margin: 20px 0;">daan</h2>
+    <!-- PC Java版内容 -->
+</div>
+<div class="content-area" id="content-bedrock-pc"><!-- PC基岩版内容 --></div>
+<div class="content-area" id="content-java-mobile"><!-- 手机Java版内容 --></div>
+<div class="content-area" id="content-bedrock-mobile"><!-- 手机基岩版内容 --></div>
+<style>
+.content-area#content-java-pc { position: relative; }
+        .content-area#content-java-pc h1.content-title { display: none; }
+  margin: -480px 0 0 0;
+  order: 1;
+}
+.java-download-btn {
+  margin: -480px 0 20px 0;
+  font-size: 18px;
+  order: 0;
+}
+.java-download-btn button {
+  padding: 8px 20px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+</style>
+
